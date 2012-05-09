@@ -12,9 +12,7 @@ ESCAPE_CHARACTERS = ('>', '<')
 
 def is_doi_entry(line):
     """Check if a line is a doi entry."""
-    if line.strip().lower().startswith('doi'):
-        return True
-    return False
+    return line.strip().lower().startswith('doi')
 
 
 def escape_character(char):
