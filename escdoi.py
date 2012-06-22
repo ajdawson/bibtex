@@ -49,13 +49,23 @@ def main(argv=None):
         argv = sys.argv
     ap = ArgumentParser(prog=os.path.basename(argv[0]),
             description=__doc__)
-    ap.add_argument('inbibfile', nargs=1)
+    ap.add_argument('inbibfile', nargs='?', default=None)
+    ap.add_argument('-o', '--outbibfile', nargs=1, default=[None])
     try:
         argns = ap.parse_args(argv[1:])
-        outbibfile = sys.stdout
-        inbibfile = open(argns.inbibfile[0], 'r')
+        outfilename = argns.outbibfile[0]
+        if outfilename is not None:
+            outbibfile = open(outfilename, 'w')
+        else:
+            outbibfile = sys.stdout
+        infilename = argns.inbibfile
+        if infilename is not None:
+            inbibfile = open(infilename, 'r')
+        else:
+            inbibfile = sys.stdin
         process_bibtex_file(inbibfile, outbibfile)
         inbibfile.close()
+        outbibfile.close()
         return 0
     except IOError, e:
         print >> sys.stderr, 'error: %s' % e
